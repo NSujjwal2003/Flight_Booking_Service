@@ -17,7 +17,7 @@ async function createAirplane(req, res) {
         return res.status(error.statusCode).json(ErrorResponse);
     }
 }
-
+    
 async function getAirplanes(req, res) {
     try {
         const airplanes = await AirplaneService.getAirplanes();
