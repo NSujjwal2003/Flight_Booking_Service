@@ -47,7 +47,7 @@ class CrudRepository {
           throw new AppError("Not able to find the resource", StatusCodes.NOT_FOUND);
         }
         return response; 
-  }
+  } 
 } 
 
 module.exports = CrudRepository;
