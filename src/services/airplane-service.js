@@ -38,11 +38,11 @@ async function getAirplane(id){
     }
     catch(error){
         if(error.statusCode == StatusCodes.NOT_FOUND){
-            throw new AppError("the airplane u req is not presenet", error.statusCode);
+            throw new AppError("the airplane u req is not presnet", error.statusCode);
         }
         throw new AppError("cant fetch data of all the airplanes", StatusCodes.INTERNAL_SERVER_ERROR);
     }
-} 
+}
 
 async function destroyAirplane(id){
     try{
@@ -58,9 +58,24 @@ async function destroyAirplane(id){
 }
 
 
+async function updateAirplane(id, data){
+    try{
+        const airplanes = await airplaneRepository.update(id, data);
+        return airplanes;
+    }
+    catch(error){
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("the airplane u req to update is not presenet", error.statusCode);
+        }
+        throw new AppError("cant fetch data of all the airplanes", StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+} 
+
+
 module.exports = {
     createAirplane, 
     getAirplanes,
     getAirplane,
-    destroyAirplane
+    destroyAirplane,
+    updateAirplane
 } 
