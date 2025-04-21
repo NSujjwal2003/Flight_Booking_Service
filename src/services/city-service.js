@@ -21,6 +21,38 @@ async function createCity(data) {
     }
 }
 
+async function destroyCity(id){
+    try{
+        const response = await cityRepository.destroy(id);
+        return response;
+    }
+    catch(error){
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("the city u req to delete is not presenet", error.statusCode);
+        }
+        throw new AppError("cant fetch data of all the cities", StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
+
+
+async function updateCity(id, data){
+    try{
+        const city = await cityRepository.update(id, data);
+        return city;
+    }
+    catch(error){
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("the city u req to update is not presenet", error.statusCode);
+        }
+        throw new AppError("cant fetch data of all the city", StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
+
+
 module.exports = {
-    createCity
+    createCity,
+    destroyCity,
+    updateCity
 }
