@@ -7,7 +7,6 @@ const router = express.Router();
 
 // /api/v1/airplanes POST request
 
-console.log("hitting routes")
 router.post('/', validateCreateRequest, CityController.createCity);
 
 
