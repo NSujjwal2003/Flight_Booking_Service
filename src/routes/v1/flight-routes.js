@@ -9,5 +9,9 @@ router.post('/', FlightMiddlewares.validateCreateRequest, FlightController.creat
 
 // /api/v1/flight?trips=MUM-DEL GET request
 router.get('/', FlightController.getAllFlights);
+
+// /api/v1/flight/:id GET request
+router.get('/:id', FlightController.getFlight);
+
 module.exports = router;
 

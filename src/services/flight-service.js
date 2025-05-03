@@ -71,9 +71,22 @@ async function getAllFlights(query){
     }
 }
 
+async function getFlight(id){
+    try{
+        const flight = await flightRepository.get(id);
+        return flight;
+    }
+    catch(error){
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("the flight u req is not presnet", error.statusCode);
+        }
+        throw new AppError("cant fetch data of all the flight", StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
 
 
 module.exports = {
     createFlight, 
     getAllFlights,
+    getFlight
 }
