@@ -1,7 +1,8 @@
 const {Sequelize} = require("sequelize");
 const CrudRepository = require("./crud-repository");
 const { Flight, Airplane, Airport, City } = require("../models");
-
+const db = require("../models");
+const {addRowLockOnFlights} = require('./queries');
 
 class FlightRepository extends CrudRepository {
   constructor() {
@@ -53,6 +54,46 @@ class FlightRepository extends CrudRepository {
     });
     return response;
   }
+
+  // async updateRemainingSeats(flightId, seats, dec = true){
+  //   const flight = await Flight.findByPk(flightId);
+  //   if(parseInt(dec)){
+  //     await flight.decrement('totalSeats', { by: seats });
+  //   } else {
+  //     await flight.increment('totalSeats', { by: seats });
+  //   }
+  //   return flight;
+  // }
+
+  async updateRemainingSeats(flightId, seats, dec = true) {
+    await db.sequelize.query(addRowLockOnFlights(flightId));
+    const flight = await Flight.findByPk(flightId);
+
+    const shouldDecrement = dec === true || dec === 1 || dec === '1' || dec === 'true';
+
+    if (shouldDecrement) {
+        await flight.decrement('totalSeats', { by: seats });
+    } else {
+        await flight.increment('totalSeats', { by: seats });
+    }
+
+    return flight;
+  }
+
+
+
 }
 
 module.exports = FlightRepository;
+
+
+
+// dec missing	Decrease ✅
+// dec = true	Decrease ✅
+// dec = "true"	Decrease ✅
+// dec = 1	Decrease ✅
+// dec = "1"	Decrease ✅
+// dec = false	Increase ✅
+// dec = "false"	Increase ✅
+// dec = 0	Increase ✅
+// dec = "0"	Increase ✅
